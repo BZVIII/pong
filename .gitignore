@@ -1,2 +1,5 @@
 venv/
 .python-version
+.vscode/
+**__pycache__/
+probatinas.py

@@ -83,7 +83,7 @@ class Game():
 
 
 if __name__ == '__main__':
-    juego = Game(800, 600)
+    juego = Game()
     juego.bucle_principal()
 
 print(__name__)

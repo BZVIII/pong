@@ -1,4 +1,5 @@
 import pygame as pg
+from random import randrange
 
 TAMANNO = (800, 600)
 
@@ -51,13 +52,25 @@ class Bola():
         """
         print("X - Posicion: {} Derecha: {}".format(self.x, self.derecha))
 
+
 class Game():
     def __init__(self):
         self.pantalla = pg.display.set_mode(TAMANNO)
         self.reloj = pg.time.Clock()
+        self.bolas = []
+        for i in range(randrange(5, 26)):
+            tamanyo = randrange(10, 41)
+            bola = Bola(randrange(0, TAMANNO[0]), 
+                             randrange(0, TAMANNO[1]), 
+                             tamanyo, 
+                             tamanyo, 
+                             (randrange(256), randrange(256), randrange(256)))
+
+            bola.derecha = randrange(2) == 1
+            bola.arriba = randrange(2) == 1
+            self.bolas.append(bola)
 
     def bucle_principal(self):
-        bola = Bola(700 - 10, TAMANNO[1] // 2 - 10, 20, 20)
         game_over = False
         pg.init()
 
@@ -69,15 +82,15 @@ class Game():
                 if evento.type == pg.QUIT:
                     game_over = True
 
-            bola.actualizate()
+            for i in range(len(self.bolas)):
+                self.bolas[i].actualizate()
 
             self.pantalla.fill((0, 0, 0))
-            pg.draw.rect(self.pantalla, bola.color, pg.Rect(bola.x, bola.y, bola.w, bola.h))
-
-
+            for bola in self.bolas:
+                pg.draw.rect(self.pantalla, bola.color, 
+                             pg.Rect(bola.x, bola.y, bola.w, bola.h))
 
             pg.display.flip()
-
 
         pg.quit()
 

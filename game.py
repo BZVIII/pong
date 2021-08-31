@@ -19,7 +19,6 @@ class Movil():
     @izquierda.setter
     def izquierda(self, valor):
         self.x = valor
-          
 
     @property
     def derecha(self):
@@ -78,7 +77,6 @@ class Raqueta(Movil):
             # self.y = TAMANNO[1] - self.h
         
 
-
 class Bola(Movil):
     def __init__(self, x, y, color=(255, 255, 255)):
         super().__init__(x, y, 20, 20, color)
@@ -108,7 +106,7 @@ class Bola(Movil):
         if self.abajo >= TAMANNO[1]:
             self.swArriba = True
 
-        if self.arriba() <= 0:
+        if self.arriba <= 0:
             self.swArriba = False
 
         """
@@ -123,6 +121,9 @@ class Bola(Movil):
         """
         print("X - Posicion: {} Derecha: {}".format(self.x, self.swDerecha))
 
+    def comprobar_choque(self, algo):
+        return self.derecha >= algo.izquierda and self.izquierda <= algo.derecha and \
+               self.abajo >= algo.arriba and self.arriba <= algo.abajo
 
 class Game():
     def __init__(self):
@@ -157,7 +158,13 @@ class Game():
                     game_over = True
 
             for movil in self.todos:
-                movil.procesa_eventos()
+                movil.procesa_eventos(eventos)
+
+            if self.bola.comprobar_choque(self.player1) or \
+               self.bola.comprobar_choque(self.player2):
+               self.bola.swDerecha = not self.bola.swDerecha
+
+            for movil in self.todos:
                 movil.actualizate()
 
             self.pantalla.fill((0, 0, 0))
